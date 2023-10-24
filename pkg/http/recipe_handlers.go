@@ -24,6 +24,11 @@ func GetRecipesByUserHandler(recipeService *service.RecipeService) gin.HandlerFu
 			return
 		}
 
+		if len(recipes) == 0 {
+			c.JSON(http.StatusNotFound, gin.H{"error": "Recipes not found"})
+			return
+		}
+
 		// Return the recipes as JSON in the response.
 		c.JSON(http.StatusOK, recipes)
 	}
@@ -41,7 +46,7 @@ func GetRecipeByIDHandler(recipeService *service.RecipeService) gin.HandlerFunc 
 		// Call the service to get the recipe by recipe ID.
 		recipe, err := recipeService.GetRecipeByID(c, recipeID)
 		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "Recipe not found"})
+			c.JSON(http.StatusNotFound, gin.H{"error": "Recipe not found"})
 			return
 		}
 
