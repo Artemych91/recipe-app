@@ -1,7 +1,6 @@
 # Go
 /vendor/
 /bin/
-/pkg/
 /log/
 
 # Node.js
