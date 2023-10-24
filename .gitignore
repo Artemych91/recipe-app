@@ -1,0 +1,9 @@
+# Go
+/vendor/
+/bin/
+/pkg/
+/log/
+
+# Node.js
+/node_modules/
+/build/
