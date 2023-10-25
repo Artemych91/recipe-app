@@ -15,10 +15,16 @@ func NewRecipeService(recipeRepository repository.RecipeRepository) *RecipeServi
 	return &RecipeService{recipeRepository: recipeRepository}
 }
 
-func (s *RecipeService) CreateRecipe(ctx context.Context, userID int, title, description string) (int, error) {
+func (s *RecipeService) CreateRecipe(ctx context.Context, recipe models.Recipe) (int, error) {
 	// Implement the logic to create a recipe.
 	// You can use the RecipeRepository to interact with the database.
-	return 0, nil
+
+	recipeId, err := s.recipeRepository.CreateRecipe(ctx, recipe)
+	if err != nil {
+		return 0, err
+	}
+
+	return recipeId, nil
 }
 
 func (s *RecipeService) GetRecipeByID(ctx context.Context, id int) (models.Recipe, error) {

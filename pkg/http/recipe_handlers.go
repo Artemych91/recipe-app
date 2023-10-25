@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/Artemych91/recipe-app/internal/models"
 	"github.com/Artemych91/recipe-app/internal/service"
 	"github.com/gin-gonic/gin"
 )
@@ -52,5 +53,22 @@ func GetRecipeByIDHandler(recipeService *service.RecipeService) gin.HandlerFunc 
 
 		// Return the recipe as JSON in the response.
 		c.JSON(http.StatusOK, recipe)
+	}
+}
+
+func CreateRecipe(recipeService *service.RecipeService) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		var newRecipe models.Recipe
+		err := c.BindJSON(&newRecipe)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Unknown parameters"})
+		}
+
+		recipeId, err := recipeService.CreateRecipe(c, newRecipe)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Internal error"})
+		}
+
+		c.JSON(http.StatusOK, gin.H{"id": recipeId})
 	}
 }
