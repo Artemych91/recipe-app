@@ -56,6 +56,25 @@ func GetRecipeByIDHandler(recipeService *service.RecipeService) gin.HandlerFunc 
 	}
 }
 
+func GetRecipesList(recipeService *service.RecipeService) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		lastShowedTS := c.DefaultQuery("lastShowedTS", "")
+		recipes, err := recipeService.GetRecipesList(c, lastShowedTS)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Error in recipes"})
+			return
+		}
+
+		if len(recipes) == 0 {
+			c.JSON(http.StatusNotFound, gin.H{"error": "Recipes not found"})
+			return
+		}
+
+		// Return the recipes as JSON in the response.
+		c.JSON(http.StatusOK, recipes)
+	}
+}
+
 func CreateRecipe(recipeService *service.RecipeService) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var newRecipe models.Recipe

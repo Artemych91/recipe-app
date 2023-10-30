@@ -7,6 +7,8 @@ import (
 	"github.com/Artemych91/recipe-app/internal/repository"
 )
 
+const PER_PAGE = 10
+
 type RecipeService struct {
 	recipeRepository repository.RecipeRepository
 }
@@ -42,6 +44,16 @@ func (s *RecipeService) GetRecipeByID(ctx context.Context, id int) (models.Recip
 func (s *RecipeService) GetRecipesByUserID(ctx context.Context, userID int) ([]models.Recipe, error) {
 
 	recipes, err := s.recipeRepository.GetRecipesByUserID(ctx, userID)
+	if err != nil {
+		return make([]models.Recipe, 0), err
+	}
+
+	return recipes, nil
+}
+
+func (s *RecipeService) GetRecipesList(ctx context.Context, lastShowedRecipeTS string) ([]models.Recipe, error) {
+
+	recipes, err := s.recipeRepository.GetRecipesList(ctx, lastShowedRecipeTS, PER_PAGE)
 	if err != nil {
 		return make([]models.Recipe, 0), err
 	}

@@ -16,6 +16,8 @@ func CreateServer(userService *service.UserService, recipeService *service.Recip
 	r.GET("/users/:userId/recipes", GetRecipesByUserHandler(recipeService))
 	r.GET("/recipes/:recipeId", GetRecipeByIDHandler(recipeService))
 	r.GET("/users/:userId", GetUserByIDHandler(userService))
+	r.GET("/recipes", GetRecipesList(recipeService))
+
 	r.POST("/recipes", CreateRecipe(recipeService))
 
 	server := &http.Server{

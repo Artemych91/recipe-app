@@ -5,4 +5,5 @@ type Recipe struct {
 	UserID      int    `json:"userId"`
 	Title       string `json:"title"`
 	Description string `json:"description"`
+	CreatedAt   string `json:"createdAt"`
 }
