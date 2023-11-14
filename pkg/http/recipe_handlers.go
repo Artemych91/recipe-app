@@ -82,6 +82,18 @@ func CreateRecipe(recipeService *service.RecipeService) gin.HandlerFunc {
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": "Unknown parameters"})
 		}
+		userID, exists := c.Get("userID")
+		if !exists {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "user not found"})
+		}
+		userIDInt, ok := userID.(int)
+		if !ok {
+			// userID is not of type int
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
+			return
+		}
+
+		newRecipe.UserID = userIDInt
 
 		recipeId, err := recipeService.CreateRecipe(c, newRecipe)
 		if err != nil {

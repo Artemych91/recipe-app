@@ -57,6 +57,16 @@ func (s *UserService) GetUserByID(ctx context.Context, id int) (dto.UserDTO, err
 	return userDTO, nil
 }
 
+func (s *UserService) GetUserByEmail(ctx context.Context, email string) (models.User, error) {
+
+	user, err := s.userRepository.GetUserByEmail(ctx, email)
+	if err != nil {
+		return models.User{}, err
+	}
+
+	return user, nil
+}
+
 func hashPassword(password string) (string, error) {
 	// Generate a salt and hash the password with it.
 	hash, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
